@@ -21,6 +21,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     decaySlider.setRange (1, 127, 1);
     decaySlider.setColour(1, juce::Colours::white);
     decaySlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
+    decaySlider.setValue (audioProcessor.decay);
     addAndMakeVisible (decaySlider);
     
     addAndMakeVisible (decayLabel);
@@ -31,9 +32,11 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     mixSlider.addListener(this);
     mixSlider.setSliderStyle (juce::Slider::RotaryHorizontalVerticalDrag);
     mixSlider.setBounds (decaySlider.getRight(), 60, 100, 100);
-    mixSlider.setRange (1, 127, 1);
+    mixSlider.setRange (0, 4, .01);
+    mixSlider.setSkewFactorFromMidPoint (1);
     mixSlider.setColour(1, juce::Colours::white);
     mixSlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
+    mixSlider.setValue (audioProcessor.mix);
     addAndMakeVisible(mixSlider);
     
     addAndMakeVisible (mixLabel);
@@ -47,6 +50,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     dwellSlider.setRange (1, 127, 1);
     dwellSlider.setColour(1, juce::Colours::white);
     dwellSlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
+    dwellSlider.setValue (audioProcessor.dwell);
     addAndMakeVisible(dwellSlider);
     
     addAndMakeVisible (dwellLabel);
@@ -60,6 +64,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     modifySlider.setRange (1, 127, 1);
     modifySlider.setColour(1, juce::Colours::white);
     modifySlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
+    modifySlider.setValue (audioProcessor.modify);
     addAndMakeVisible(modifySlider);
     
     addAndMakeVisible (modifyLabel);
@@ -73,6 +78,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     toneSlider.setRange (1, 127, 1);
     toneSlider.setColour(1, juce::Colours::white);
     toneSlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
+    toneSlider.setValue (audioProcessor.tone);
     addAndMakeVisible(toneSlider);
     
     addAndMakeVisible (toneLabel);
@@ -86,6 +92,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     preDelaySlider.setRange (1, 127, 1);
     preDelaySlider.setColour(1, juce::Colours::white);
     preDelaySlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
+    preDelaySlider.setValue (audioProcessor.preDelay);
     addAndMakeVisible(preDelaySlider);
     
     addAndMakeVisible (preDelayLabel);
@@ -130,9 +137,11 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     worldTypeLabel.setJustificationType (juce::Justification::centred);
     
     addAndMakeVisible (darkOnButton);
+    darkOnButton.setToggleState (audioProcessor.darkOn, juce::dontSendNotification);
     darkOnButton.setBounds (40, 370, 30, 30);
     
     addAndMakeVisible (worldOnButton);
+    worldOnButton.setToggleState (audioProcessor.worldOn, juce::dontSendNotification);
     worldOnButton.setBounds (240, 370, 30, 30);
     
     addAndMakeVisible (darkWorldOnLabel);
@@ -152,7 +161,7 @@ void CBDarkWorldEditorAudioProcessorEditor::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
-    g.setColour (juce::Colours::black);
+    g.setColour (juce::Colours::transparentWhite);
     g.setFont (30.0f);
     g.drawFittedText ("Dark World Editor", 50, 10, 200, 25, juce::Justification::centred, 1);
 }
@@ -163,12 +172,52 @@ void CBDarkWorldEditorAudioProcessorEditor::resized()
     // subcomponents in your editor..
 }
 
-void CBDarkWorldEditorAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
+void CBDarkWorldEditorAudioProcessorEditor::sliderValueChanged(juce::Slider * slider)
 {
-//    if (slider == &decaySlider)
+    if (slider == &decaySlider)
+    {
+        audioProcessor.decay = decaySlider.getValue();
+    }
+    
+    if (slider == &mixSlider)
+    {
+        audioProcessor.mix = mixSlider.getValue();
+    }
+    
+    if (slider == &dwellSlider)
+    {
+        audioProcessor.dwell = dwellSlider.getValue();
+    }
+    
+    if (slider == &modifySlider)
+    {
+        audioProcessor.modify = modifySlider.getValue();
+    }
+    
+    if (slider == &toneSlider)
+    {
+        audioProcessor.tone = toneSlider.getValue();
+    }
+    
+    if (slider == &preDelaySlider)
+    {
+        audioProcessor.preDelay = preDelaySlider.getValue();
+    }
 }
 
-void CBDarkWorldEditorAudioProcessorEditor::comboBoxChanged(juce::ComboBox *comboBox)
+void CBDarkWorldEditorAudioProcessorEditor::comboBoxChanged(juce::ComboBox * comboBox)
 {
     
+}
+
+void CBDarkWorldEditorAudioProcessorEditor::buttonClicked (juce::Button * button)
+{
+    if (button == &darkOnButton){
+        audioProcessor.darkOn = !audioProcessor.darkOn;
+    }
+    
+    if (button == &worldOnButton)
+    {
+        audioProcessor.worldOn = !audioProcessor.worldOn;
+    }
 }

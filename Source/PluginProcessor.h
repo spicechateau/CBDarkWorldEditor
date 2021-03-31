@@ -9,6 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Distortion.h"
+#include "Fuzz.h"
 
 //==============================================================================
 /**
@@ -53,14 +55,24 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    int decay;
-    int mix;
-    int dwell;
-    int modify;
-    int tone;
-    int preDelay;
+    float decay = 1.f; // Distortion drive
+    float mix = 1.f; // Output gain
+    float dwell = 1.f; // Fuzz drive
+    int modify = 63;
+    int tone = 63;
+    int preDelay = 63;
+    
+    int darkType = 1;
+    int effectOrder = 1;
+    int worldType = 1;
+    
+    bool darkOn = false;
+    bool worldOn = false;
     
 private:
+    
+    Distortion myDistortion;
+    Fuzz myFuzz;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CBDarkWorldEditorAudioProcessor)
 };
