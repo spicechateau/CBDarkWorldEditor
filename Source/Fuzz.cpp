@@ -15,7 +15,9 @@ float Fuzz::processSample (float x)
 {
     float y;
     
-    x = x * drive;
+    smoothDrive = alpha * smoothDrive + (1.f - alpha) * drive;
+        
+    x = x * smoothDrive;
     
     if (x > 0.5f){
         y = 0.5f;
@@ -34,4 +36,10 @@ void Fuzz::setDrive (float newDrive)
     if (newDrive <= 10.f && newDrive > 0.01f){
         drive = newDrive;
     }
+}
+
+void Fuzz::setFs (float newFs)
+{
+    Fs = newFs;
+    alpha = exp(-log(9) / (Fs * smoothTime));
 }
