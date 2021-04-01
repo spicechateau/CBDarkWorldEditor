@@ -18,7 +18,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     decaySlider.addListener(this);
     decaySlider.setSliderStyle (juce::Slider::RotaryHorizontalVerticalDrag);
     decaySlider.setBounds (1, 60, 100, 100);
-    decaySlider.setRange (1, 127, 1);
+    decaySlider.setRange (1, 10, .01);
     decaySlider.setColour(1, juce::Colours::white);
     decaySlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
     decaySlider.setValue (audioProcessor.decay);
@@ -47,7 +47,8 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     dwellSlider.addListener(this);
     dwellSlider.setSliderStyle (juce::Slider::RotaryHorizontalVerticalDrag);
     dwellSlider.setBounds (mixSlider.getRight(), 60, 100, 100);
-    dwellSlider.setRange (1, 127, 1);
+    dwellSlider.setRange (.01, 10, .01);
+    dwellSlider.setSkewFactorFromMidPoint (1);
     dwellSlider.setColour(1, juce::Colours::white);
     dwellSlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
     dwellSlider.setValue (audioProcessor.dwell);

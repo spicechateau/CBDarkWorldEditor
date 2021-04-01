@@ -14,11 +14,14 @@
 float Fuzz::processSample (float x)
 {
     float y;
-    if (x > 0.35f){
-        y = 0.35f;
+    
+    x = x * drive;
+    
+    if (x > 0.5f){
+        y = 0.5f;
     }
-    else if (x < -0.35f){
-        y = -0.35f;
+    else if (x < -0.5f){
+        y = -0.5f;
     }
     else {
         y = x;
@@ -28,7 +31,7 @@ float Fuzz::processSample (float x)
 
 void Fuzz::setDrive (float newDrive)
 {
-    if (newDrive <= 10.f && newDrive >= 1.f){
+    if (newDrive <= 10.f && newDrive > 0.01f){
         drive = newDrive;
     }
 }

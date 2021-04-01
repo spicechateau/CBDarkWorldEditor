@@ -137,6 +137,9 @@ void CBDarkWorldEditorAudioProcessor::processBlock (juce::AudioBuffer<float>& bu
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
+    
+    myDistortion.setDrive (decay);
+    myFuzz.setDrive (dwell);
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
@@ -144,19 +147,12 @@ void CBDarkWorldEditorAudioProcessor::processBlock (juce::AudioBuffer<float>& bu
         {
             float x = buffer.getReadPointer(channel)[n];
             
-            if (worldOn)
-            {
-                buffer.getWritePointer(channel)[n] = 0;
-            }
-            else
-            {
             float distOut = myDistortion.processSample (x);
             float fuzzOut = myFuzz.processSample (distOut);
 
             x = fuzzOut * mix;
                     
             buffer.getWritePointer(channel)[n] = x;
-            }
         }
     }
 }
