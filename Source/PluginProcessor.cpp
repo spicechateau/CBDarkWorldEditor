@@ -140,18 +140,32 @@ void CBDarkWorldEditorAudioProcessor::processBlock (juce::AudioBuffer<float>& bu
     
     myDistortion.setDrive (decay);
     myFuzz.setDrive (dwell);
+    
+    midiParams.setBypass (darkOn, worldOn);
+//    midiParams.setDecay (decay);
+//    midiParams.setMix (mix);
+//    midiParams.setDwell (dwell);
+    midiParams.setMod (modify);
+    midiParams.setTone (tone);
+    midiParams.setPreDelay (preDelay);
+    midiParams.setDarkType (darkType);
+    midiParams.setEffectOrder (effectOrder);
+    midiParams.setWorldType (worldType);
+    
+//    midiChange.processMIDI (midiMessages);
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         for (int n = 0; n < buffer.getNumSamples(); n++)
         {
             float x = buffer.getReadPointer(channel)[n];
-            
-            float distOut = myDistortion.processSample (x);
-            float fuzzOut = myFuzz.processSample (distOut);
 
+            float distOut = myDistortion.processSample (x);
+
+
+            float fuzzOut = myFuzz.processSample (distOut);
             x = fuzzOut * mix;
-                    
+
             buffer.getWritePointer(channel)[n] = x;
         }
     }

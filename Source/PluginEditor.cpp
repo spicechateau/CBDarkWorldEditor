@@ -138,11 +138,13 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     worldTypeLabel.setJustificationType (juce::Justification::centred);
     
     addAndMakeVisible (darkOnButton);
-    darkOnButton.setToggleState (audioProcessor.darkOn, juce::dontSendNotification);
+    darkOnButton.setToggleState (audioProcessor.darkOn, juce::NotificationType::dontSendNotification);
+    darkOnButton.addListener (this);
     darkOnButton.setBounds (40, 370, 30, 30);
     
     addAndMakeVisible (worldOnButton);
-    worldOnButton.setToggleState (audioProcessor.worldOn, juce::dontSendNotification);
+    worldOnButton.setToggleState (audioProcessor.worldOn, juce::NotificationType::dontSendNotification);
+    worldOnButton.addListener (this);
     worldOnButton.setBounds (240, 370, 30, 30);
     
     addAndMakeVisible (darkWorldOnLabel);
@@ -162,7 +164,7 @@ void CBDarkWorldEditorAudioProcessorEditor::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
-    g.setColour (juce::Colours::transparentWhite);
+    g.setColour (juce::Colours::grey);
     g.setFont (30.0f);
     g.drawFittedText ("Dark World Editor", 50, 10, 200, 25, juce::Justification::centred, 1);
 }
@@ -219,6 +221,6 @@ void CBDarkWorldEditorAudioProcessorEditor::buttonClicked (juce::Button * button
     
     if (button == &worldOnButton)
     {
-        audioProcessor.worldOn = !audioProcessor.worldOn;
+        audioProcessor.worldOn = !audioProcessor.darkOn;
     }
 }

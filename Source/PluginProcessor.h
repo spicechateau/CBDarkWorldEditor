@@ -11,6 +11,8 @@
 #include <JuceHeader.h>
 #include "Distortion.h"
 #include "Fuzz.h"
+#include "MIDIChange.h"
+#include "MIDIParameters.h"
 
 //==============================================================================
 /**
@@ -66,13 +68,16 @@ public:
     int effectOrder = 1;
     int worldType = 1;
     
-    bool darkOn = false;
-    bool worldOn = false;
+    bool darkOn = true;
+    bool worldOn = true;
     
 private:
     
     Distortion myDistortion;
     Fuzz myFuzz;
+
+    MIDIChange midiChange;
+    MIDIParameters midiParams;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CBDarkWorldEditorAudioProcessor)
 };

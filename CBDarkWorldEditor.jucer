@@ -2,11 +2,9 @@
 
 <JUCERPROJECT id="p0t2cU" name="CBDarkWorldEditor" projectType="audioplug"
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
-              jucerFormatVersion="1" companyName="Spice Chateau" pluginCharacteristicsValue="pluginProducesMidiOut">
+              jucerFormatVersion="1" companyName="Spice Chateau" pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn">
   <MAINGROUP id="LmC183" name="CBDarkWorldEditor">
     <GROUP id="{43191A4F-B6A4-E80C-E649-E0DA4F479798}" name="Source">
-      <FILE id="nT8LSt" name="Fuzz.cpp" compile="1" resource="0" file="Source/Fuzz.cpp"/>
-      <FILE id="ZK4UFs" name="Fuzz.h" compile="0" resource="0" file="Source/Fuzz.h"/>
       <FILE id="MD1rSQ" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="hKVG6M" name="PluginProcessor.h" compile="0" resource="0"
@@ -16,6 +14,14 @@
       <FILE id="WpFDMH" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="JnJr7K" name="Distortion.cpp" compile="1" resource="0" file="Source/Distortion.cpp"/>
       <FILE id="ZnTHbl" name="Distortion.h" compile="0" resource="0" file="Source/Distortion.h"/>
+      <FILE id="nT8LSt" name="Fuzz.cpp" compile="1" resource="0" file="Source/Fuzz.cpp"/>
+      <FILE id="ZK4UFs" name="Fuzz.h" compile="0" resource="0" file="Source/Fuzz.h"/>
+      <FILE id="y6fDPN" name="MIDIChange.cpp" compile="1" resource="0" file="Source/MIDIChange.cpp"/>
+      <FILE id="VQ0cuz" name="MIDIChange.h" compile="0" resource="0" file="Source/MIDIChange.h"/>
+      <FILE id="tCXRlz" name="MIDIParameters.cpp" compile="1" resource="0"
+            file="Source/MIDIParameters.cpp"/>
+      <FILE id="m2qqSw" name="MIDIParameters.h" compile="0" resource="0"
+            file="Source/MIDIParameters.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
