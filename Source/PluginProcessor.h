@@ -9,8 +9,6 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "Distortion.h"
-#include "Fuzz.h"
 #include "MIDIChange.h"
 #include "MIDIParameters.h"
 
@@ -57,9 +55,10 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    float decay = 1.f; // Distortion drive
-    float mix = 1.f; // Output gain
-    float dwell = 1.f; // Fuzz drive
+//    int decay = 63;
+    juce::AudioParameterInt * decay;
+    int mix = 63;
+    int dwell = 63;
     int modify = 63;
     int tone = 63;
     int preDelay = 63;
@@ -72,10 +71,6 @@ public:
     bool worldOn = true;
     
 private:
-    
-    Distortion myDistortion;
-    Fuzz myFuzz;
-
     MIDIChange midiChange;
     MIDIParameters midiParams;
     //==============================================================================

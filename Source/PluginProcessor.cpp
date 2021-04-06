@@ -22,6 +22,7 @@ CBDarkWorldEditorAudioProcessor::CBDarkWorldEditorAudioProcessor()
                        )
 #endif
 {
+    addParameter(decay = new juce::AudioParameterInt ("DECAY", "Decay", 1, 127, 63));
 }
 
 CBDarkWorldEditorAudioProcessor::~CBDarkWorldEditorAudioProcessor()
@@ -138,13 +139,10 @@ void CBDarkWorldEditorAudioProcessor::processBlock (juce::AudioBuffer<float>& bu
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    myDistortion.setDrive (decay);
-    myFuzz.setDrive (dwell);
-    
     midiParams.setBypass (darkOn, worldOn);
-//    midiParams.setDecay (decay);
-//    midiParams.setMix (mix);
-//    midiParams.setDwell (dwell);
+    midiParams.setDecay (* decay);
+    midiParams.setMix (mix);
+    midiParams.setDwell (dwell);
     midiParams.setMod (modify);
     midiParams.setTone (tone);
     midiParams.setPreDelay (preDelay);
@@ -152,19 +150,13 @@ void CBDarkWorldEditorAudioProcessor::processBlock (juce::AudioBuffer<float>& bu
     midiParams.setEffectOrder (effectOrder);
     midiParams.setWorldType (worldType);
     
-//    midiChange.processMIDI (midiMessages);
+    midiChange.processMIDI (midiMessages);
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         for (int n = 0; n < buffer.getNumSamples(); n++)
         {
             float x = buffer.getReadPointer(channel)[n];
-
-            float distOut = myDistortion.processSample (x);
-
-
-            float fuzzOut = myFuzz.processSample (distOut);
-            x = fuzzOut * mix;
 
             buffer.getWritePointer(channel)[n] = x;
         }
@@ -185,15 +177,21 @@ juce::AudioProcessorEditor* CBDarkWorldEditorAudioProcessor::createEditor()
 //==============================================================================
 void CBDarkWorldEditorAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    std::unique_ptr <juce::XmlElement> xml (new juce::XmlElement ("CBDarkWorldEditorParameters"));
+    xml -> setAttribute ("DECAY", (double) * decay);
+    copyXmlToBinary (*xml, destData);
 }
 
 void CBDarkWorldEditorAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr <juce::XmlElement> xml (getXmlFromBinary (data, sizeInBytes));
+    if (xml != nullptr)
+    {
+        if (xml -> hasTagName ("CBDarkWorldEditorParameters"))
+        {
+            * decay = xml -> getIntAttribute ("DECAY", 63);
+        }
+    }
 }
 
 //==============================================================================

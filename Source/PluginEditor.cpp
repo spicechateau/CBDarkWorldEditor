@@ -21,7 +21,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     decaySlider.setRange (1, 10, .01);
     decaySlider.setColour(1, juce::Colours::white);
     decaySlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
-    decaySlider.setValue (audioProcessor.decay);
+    decaySlider.setValue (* audioProcessor.decay);
     addAndMakeVisible (decaySlider);
     
     addAndMakeVisible (decayLabel);
@@ -179,7 +179,7 @@ void CBDarkWorldEditorAudioProcessorEditor::sliderValueChanged(juce::Slider * sl
 {
     if (slider == &decaySlider)
     {
-        audioProcessor.decay = decaySlider.getValue();
+        * audioProcessor.decay = decaySlider.getValue();
     }
     
     if (slider == &mixSlider)
