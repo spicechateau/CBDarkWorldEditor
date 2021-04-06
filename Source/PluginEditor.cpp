@@ -152,6 +152,8 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     darkWorldOnLabel.setBounds (50, 365, 200, 40);
     darkWorldOnLabel.setFont (16.f);
     darkWorldOnLabel.setJustificationType (juce::Justification::centred);
+    
+    startTimerHz (30);
 }
 
 CBDarkWorldEditorAudioProcessorEditor::~CBDarkWorldEditorAudioProcessorEditor()
@@ -223,4 +225,9 @@ void CBDarkWorldEditorAudioProcessorEditor::buttonClicked (juce::Button * button
     {
         audioProcessor.worldOn = !audioProcessor.darkOn;
     }
+}
+
+void CBDarkWorldEditorAudioProcessorEditor::timerCallback()
+{
+    decaySlider.setValue (* audioProcessor.decay);
 }

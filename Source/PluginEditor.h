@@ -17,7 +17,8 @@
 class CBDarkWorldEditorAudioProcessorEditor  : public juce::AudioProcessorEditor,
                                                 public juce::Slider::Listener,
                                                 public juce::ComboBox::Listener,
-                                                public juce::Button::Listener
+                                                public juce::Button::Listener,
+                                                public juce::Timer
 {
 public:
     CBDarkWorldEditorAudioProcessorEditor (CBDarkWorldEditorAudioProcessor&);
@@ -29,6 +30,7 @@ public:
     void sliderValueChanged (juce::Slider * slider) override;
     void comboBoxChanged (juce::ComboBox * comboBox) override;
     void buttonClicked (juce::Button * button) override;
+    void timerCallback () override;
 
 private:
     CBDarkWorldEditorAudioProcessor& audioProcessor;
