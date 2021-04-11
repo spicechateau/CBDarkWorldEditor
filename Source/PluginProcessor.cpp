@@ -22,7 +22,19 @@ CBDarkWorldEditorAudioProcessor::CBDarkWorldEditorAudioProcessor()
                        )
 #endif
 {
-    addParameter(decay = new juce::AudioParameterInt ("DECAY", "Decay", 1, 127, 63));
+    addParameter (darkOn = new juce::AudioParameterBool ("DARKON", "Dark On", false));
+    addParameter (worldOn = new juce::AudioParameterBool ("WORLDON", "World On", false));
+    
+    addParameter (decay = new juce::AudioParameterInt ("DECAY", "Decay", 1, 127, 63));
+    addParameter (mix = new juce::AudioParameterInt ("MIX", "Mix", 1, 127, 63));
+    addParameter (dwell = new juce::AudioParameterInt ("DWELL", "Dwell", 1, 127, 63));
+    addParameter (modify = new juce::AudioParameterInt ("MODIFY", "Modify", 1, 127, 63));
+    addParameter (tone = new juce::AudioParameterInt ("TONE", "Tone", 1, 127, 63));
+    addParameter (preDelay = new juce::AudioParameterInt ("PREDELAY", "Pre-Delay", 1, 127, 63));
+    
+    addParameter (darkType = new juce::AudioParameterInt ("DARKTYPE", "Dark Reverb Type", 1, 3, 1));
+    addParameter (effectOrder = new juce::AudioParameterInt ("EFFECTORDER", "Effect Order", 1, 3, 1));
+    addParameter (worldType = new juce::AudioParameterInt ("WORLDTYPE", "World Reverb Type", 1, 3, 1));
 }
 
 CBDarkWorldEditorAudioProcessor::~CBDarkWorldEditorAudioProcessor()
@@ -132,35 +144,21 @@ bool CBDarkWorldEditorAudioProcessor::isBusesLayoutSupported (const BusesLayout&
 
 void CBDarkWorldEditorAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
-
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+    buffer.clear();
+    midiMessages.clear();
     
-    midiParams.setBypass (darkOn, worldOn);
+    midiParams.setBypass (* darkOn, * worldOn);
     midiParams.setDecay (* decay);
-    midiParams.setMix (mix);
-    midiParams.setDwell (dwell);
-    midiParams.setMod (modify);
-    midiParams.setTone (tone);
-    midiParams.setPreDelay (preDelay);
-    midiParams.setDarkType (darkType);
-    midiParams.setEffectOrder (effectOrder);
-    midiParams.setWorldType (worldType);
+    midiParams.setMix (* mix);
+    midiParams.setDwell (* dwell);
+    midiParams.setMod (* modify);
+    midiParams.setTone (* tone);
+    midiParams.setPreDelay (* preDelay);
+    midiParams.setDarkType (* darkType);
+    midiParams.setEffectOrder (* effectOrder);
+    midiParams.setWorldType (* worldType);
     
     midiChange.processMIDI (midiMessages);
-
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        for (int n = 0; n < buffer.getNumSamples(); n++)
-        {
-            float x = buffer.getReadPointer(channel)[n];
-
-            buffer.getWritePointer(channel)[n] = x;
-        }
-    }
 }
 
 //==============================================================================
@@ -178,18 +176,36 @@ juce::AudioProcessorEditor* CBDarkWorldEditorAudioProcessor::createEditor()
 void CBDarkWorldEditorAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     std::unique_ptr <juce::XmlElement> xml (new juce::XmlElement ("CBDarkWorldEditorParameters"));
-    xml -> setAttribute ("DECAY", (double) * decay);
+        xml -> setAttribute ("DARKON", (double) * darkOn);
+        xml -> setAttribute ("WORLDON", (double) * worldOn);
+        xml -> setAttribute ("DECAY", (double) * decay);
+        xml -> setAttribute ("MIX", (double) * mix);
+        xml -> setAttribute ("DWELL", (double) * dwell);
+        xml -> setAttribute ("MODIFY", (double) * modify);
+        xml -> setAttribute ("TONE", (double) * tone);
+        xml -> setAttribute ("PREDELAY", (double) * preDelay);
+        xml -> setAttribute ("DARKON", (double) * darkOn);
+        xml -> setAttribute ("EFFECTORDER", (double) * effectOrder);
+        xml -> setAttribute ("WORLDON", (double) * worldOn);
     copyXmlToBinary (*xml, destData);
 }
 
 void CBDarkWorldEditorAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     std::unique_ptr <juce::XmlElement> xml (getXmlFromBinary (data, sizeInBytes));
-    if (xml != nullptr)
-    {
-        if (xml -> hasTagName ("CBDarkWorldEditorParameters"))
-        {
+    if (xml != nullptr){
+        if (xml -> hasTagName ("CBDarkWorldEditorParameters")){
+            * darkOn = xml -> getBoolAttribute ("DARKON", false);
+            * worldOn = xml -> getBoolAttribute ("WORLDON", false);
             * decay = xml -> getIntAttribute ("DECAY", 63);
+            * mix = xml -> getIntAttribute ("MIX", 63);
+            * dwell = xml -> getIntAttribute ("DWELL", 63);
+            * modify = xml -> getIntAttribute ("MODIFY", 63);
+            * tone = xml -> getIntAttribute ("TONE", 63);
+            * preDelay = xml -> getIntAttribute ("PREDELAY", 63);
+            * darkOn = xml -> getIntAttribute ("DARKON", 1);
+            * effectOrder = xml -> getIntAttribute ("EFFECTORDER", 1);
+            * worldOn = xml -> getIntAttribute ("WORLDON", 1);
         }
     }
 }

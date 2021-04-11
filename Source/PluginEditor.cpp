@@ -18,7 +18,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     decaySlider.addListener(this);
     decaySlider.setSliderStyle (juce::Slider::RotaryHorizontalVerticalDrag);
     decaySlider.setBounds (1, 60, 100, 100);
-    decaySlider.setRange (1, 10, .01);
+    decaySlider.setRange (1, 127, 1);
     decaySlider.setColour(1, juce::Colours::white);
     decaySlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
     decaySlider.setValue (* audioProcessor.decay);
@@ -32,11 +32,10 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     mixSlider.addListener(this);
     mixSlider.setSliderStyle (juce::Slider::RotaryHorizontalVerticalDrag);
     mixSlider.setBounds (decaySlider.getRight(), 60, 100, 100);
-    mixSlider.setRange (0, 4, .01);
-    mixSlider.setSkewFactorFromMidPoint (1);
+    mixSlider.setRange (1, 127, 1);
     mixSlider.setColour(1, juce::Colours::white);
     mixSlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
-    mixSlider.setValue (audioProcessor.mix);
+    mixSlider.setValue (* audioProcessor.mix);
     addAndMakeVisible(mixSlider);
     
     addAndMakeVisible (mixLabel);
@@ -47,11 +46,10 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     dwellSlider.addListener(this);
     dwellSlider.setSliderStyle (juce::Slider::RotaryHorizontalVerticalDrag);
     dwellSlider.setBounds (mixSlider.getRight(), 60, 100, 100);
-    dwellSlider.setRange (.01, 10, .01);
-    dwellSlider.setSkewFactorFromMidPoint (1);
+    dwellSlider.setRange (1, 127, 1);
     dwellSlider.setColour(1, juce::Colours::white);
     dwellSlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
-    dwellSlider.setValue (audioProcessor.dwell);
+    dwellSlider.setValue (* audioProcessor.dwell);
     addAndMakeVisible(dwellSlider);
     
     addAndMakeVisible (dwellLabel);
@@ -65,7 +63,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     modifySlider.setRange (1, 127, 1);
     modifySlider.setColour(1, juce::Colours::white);
     modifySlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
-    modifySlider.setValue (audioProcessor.modify);
+    modifySlider.setValue (* audioProcessor.modify);
     addAndMakeVisible(modifySlider);
     
     addAndMakeVisible (modifyLabel);
@@ -79,7 +77,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     toneSlider.setRange (1, 127, 1);
     toneSlider.setColour(1, juce::Colours::white);
     toneSlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
-    toneSlider.setValue (audioProcessor.tone);
+    toneSlider.setValue (* audioProcessor.tone);
     addAndMakeVisible(toneSlider);
     
     addAndMakeVisible (toneLabel);
@@ -93,7 +91,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     preDelaySlider.setRange (1, 127, 1);
     preDelaySlider.setColour(1, juce::Colours::white);
     preDelaySlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 30, 20);
-    preDelaySlider.setValue (audioProcessor.preDelay);
+    preDelaySlider.setValue (* audioProcessor.preDelay);
     addAndMakeVisible(preDelaySlider);
     
     addAndMakeVisible (preDelayLabel);
@@ -106,6 +104,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     darkTypeBox.addItem ("Mod", 1);
     darkTypeBox.addItem ("Shimmer", 2);
     darkTypeBox.addItem ("Black", 3);
+    darkTypeBox.setSelectedId (* audioProcessor.darkType, juce::NotificationType::dontSendNotification);
     darkTypeBox.addListener (this);
     
     addAndMakeVisible (darkTypeLabel);
@@ -116,8 +115,9 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     addAndMakeVisible (effectOrderBox);
     effectOrderBox.setBounds (darkTypeBox.getRight() + 20, 330, 80, 20);
     effectOrderBox.addItem ("Parallel", 1);
-    effectOrderBox.addItem ("D > W", 2);
-    effectOrderBox.addItem ("W > D", 3);
+    effectOrderBox.addItem ("D -> W", 2);
+    effectOrderBox.addItem ("W -> D", 3);
+    effectOrderBox.setSelectedId (* audioProcessor.effectOrder, juce::NotificationType::dontSendNotification);
     effectOrderBox.addListener (this);
     
     addAndMakeVisible (effectOrderLabel);
@@ -130,6 +130,7 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     worldTypeBox.addItem ("Hall", 1);
     worldTypeBox.addItem ("Plate", 2);
     worldTypeBox.addItem ("Spring", 3);
+    worldTypeBox.setSelectedId (* audioProcessor.worldType, juce::NotificationType::dontSendNotification);
     worldTypeBox.addListener (this);
     
     addAndMakeVisible (worldTypeLabel);
@@ -138,12 +139,12 @@ CBDarkWorldEditorAudioProcessorEditor::CBDarkWorldEditorAudioProcessorEditor (CB
     worldTypeLabel.setJustificationType (juce::Justification::centred);
     
     addAndMakeVisible (darkOnButton);
-    darkOnButton.setToggleState (audioProcessor.darkOn, juce::NotificationType::dontSendNotification);
+    darkOnButton.setToggleState (* audioProcessor.darkOn, juce::NotificationType::dontSendNotification);
     darkOnButton.addListener (this);
     darkOnButton.setBounds (40, 370, 30, 30);
     
     addAndMakeVisible (worldOnButton);
-    worldOnButton.setToggleState (audioProcessor.worldOn, juce::NotificationType::dontSendNotification);
+    worldOnButton.setToggleState (* audioProcessor.worldOn, juce::NotificationType::dontSendNotification);
     worldOnButton.addListener (this);
     worldOnButton.setBounds (240, 370, 30, 30);
     
@@ -179,55 +180,68 @@ void CBDarkWorldEditorAudioProcessorEditor::resized()
 
 void CBDarkWorldEditorAudioProcessorEditor::sliderValueChanged(juce::Slider * slider)
 {
-    if (slider == &decaySlider)
-    {
+    if (slider == &decaySlider){
         * audioProcessor.decay = decaySlider.getValue();
     }
     
-    if (slider == &mixSlider)
-    {
-        audioProcessor.mix = mixSlider.getValue();
+    if (slider == &mixSlider){
+        * audioProcessor.mix = mixSlider.getValue();
     }
     
-    if (slider == &dwellSlider)
-    {
-        audioProcessor.dwell = dwellSlider.getValue();
+    if (slider == &dwellSlider){
+        * audioProcessor.dwell = dwellSlider.getValue();
     }
     
-    if (slider == &modifySlider)
-    {
-        audioProcessor.modify = modifySlider.getValue();
+    if (slider == &modifySlider){
+        * audioProcessor.modify = modifySlider.getValue();
     }
     
-    if (slider == &toneSlider)
-    {
-        audioProcessor.tone = toneSlider.getValue();
+    if (slider == &toneSlider){
+        * audioProcessor.tone = toneSlider.getValue();
     }
     
-    if (slider == &preDelaySlider)
-    {
-        audioProcessor.preDelay = preDelaySlider.getValue();
+    if (slider == &preDelaySlider){
+        * audioProcessor.preDelay = preDelaySlider.getValue();
     }
 }
 
 void CBDarkWorldEditorAudioProcessorEditor::comboBoxChanged(juce::ComboBox * comboBox)
 {
-    
+    if (comboBox == &darkTypeBox){
+        * audioProcessor.darkType = darkTypeBox.getSelectedId();
+    }
+
+    if (comboBox == &effectOrderBox){
+        * audioProcessor.effectOrder = effectOrderBox.getSelectedId();
+    }
+
+    if (comboBox == &worldTypeBox){
+        * audioProcessor.worldType = worldTypeBox.getSelectedId();
+    }
 }
 
 void CBDarkWorldEditorAudioProcessorEditor::buttonClicked (juce::Button * button)
 {
     if (button == &darkOnButton){
-        audioProcessor.darkOn = !audioProcessor.darkOn;
+        * audioProcessor.darkOn = ! * audioProcessor.darkOn;
     }
     
-    if (button == &worldOnButton)
-    {
-        audioProcessor.worldOn = !audioProcessor.darkOn;
+    if (button == &worldOnButton){
+        * audioProcessor.worldOn = ! * audioProcessor.worldOn;
     }
 }
 
 void CBDarkWorldEditorAudioProcessorEditor::timerCallback()
 {
+    darkOnButton.setToggleState (* audioProcessor.darkOn, juce::NotificationType::dontSendNotification);
+    worldOnButton.setToggleState (* audioProcessor.worldOn, juce::NotificationType::dontSendNotification);
     decaySlider.setValue (* audioProcessor.decay);
+    mixSlider.setValue (* audioProcessor.mix);
+    dwellSlider.setValue (* audioProcessor.dwell);
+    modifySlider.setValue (* audioProcessor.modify);
+    toneSlider.setValue (* audioProcessor.tone);
+    preDelaySlider.setValue (* audioProcessor.preDelay);
+    darkTypeBox.setSelectedId (* audioProcessor.darkType);
+    effectOrderBox.setSelectedId (* audioProcessor.effectOrder);
+    worldTypeBox.setSelectedId (* audioProcessor.worldType);
 }

@@ -23,7 +23,7 @@ public:
     juce::MidiBuffer processedBuffer;
     
 private:
-    int midiChannel = 16;
+    int midiChannel = 2;
     
     MIDIParameters midiParams;
 };

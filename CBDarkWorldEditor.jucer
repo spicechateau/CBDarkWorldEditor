@@ -2,8 +2,9 @@
 
 <JUCERPROJECT id="p0t2cU" name="CBDarkWorldEditor" projectType="audioplug"
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
-              jucerFormatVersion="1" companyName="Spice Chateau" pluginCharacteristicsValue="pluginIsMidiEffectPlugin"
-              pluginFormats="buildAU" version="1.0.0">
+              jucerFormatVersion="1" companyName="Spice Chateau" pluginFormats="buildAU"
+              version="1.0.0" pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
+              pluginAUMainType="'aumf'" pluginVST3Category="External">
   <MAINGROUP id="LmC183" name="CBDarkWorldEditor">
     <GROUP id="{43191A4F-B6A4-E80C-E649-E0DA4F479798}" name="Source">
       <FILE id="MD1rSQ" name="PluginProcessor.cpp" compile="1" resource="0"

@@ -55,20 +55,19 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-//    int decay = 63;
+    juce::AudioParameterBool * darkOn;
+    juce::AudioParameterBool * worldOn;
+    
     juce::AudioParameterInt * decay;
-    int mix = 63;
-    int dwell = 63;
-    int modify = 63;
-    int tone = 63;
-    int preDelay = 63;
+    juce::AudioParameterInt * mix;
+    juce::AudioParameterInt * dwell;
+    juce::AudioParameterInt * modify;
+    juce::AudioParameterInt * tone;
+    juce::AudioParameterInt * preDelay;
     
-    int darkType = 1;
-    int effectOrder = 1;
-    int worldType = 1;
-    
-    bool darkOn = true;
-    bool worldOn = true;
+    juce::AudioParameterInt * darkType;
+    juce::AudioParameterInt * effectOrder;
+    juce::AudioParameterInt * worldType;
     
 private:
     MIDIChange midiChange;
