@@ -26,7 +26,7 @@ void MIDIChange::processMIDIInput (const juce::MidiBuffer& MidiMessages)
     
     while (it.getNextEvent(currentMessage, samplePos))
     {
-        currentMessage = juce::MidiMessage::controllerEvent (midiChannel, 103, midiParams.bypass);
+        currentMessage = juce::MidiMessage::controllerEvent (midiChannel, 14, midiParams.bypass);
         
         processedBuffer.addEvent (currentMessage, samplePos);
     }

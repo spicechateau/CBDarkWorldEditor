@@ -144,7 +144,13 @@ bool CBDarkWorldEditorAudioProcessor::isBusesLayoutSupported (const BusesLayout&
 
 void CBDarkWorldEditorAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    buffer.clear();
+    juce::ScopedNoDenormals noDenormals;
+    auto totalNumInputChannels  = getTotalNumInputChannels();
+    auto totalNumOutputChannels = getTotalNumOutputChannels();
+    
+    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+        buffer.clear (i, 0, buffer.getNumSamples());
+
     midiMessages.clear();
     
     midiParams.setBypass (* darkOn, * worldOn);
@@ -158,7 +164,9 @@ void CBDarkWorldEditorAudioProcessor::processBlock (juce::AudioBuffer<float>& bu
     midiParams.setEffectOrder (* effectOrder);
     midiParams.setWorldType (* worldType);
     
-    midiChange.processMIDI (midiMessages);
+    for (int n = 0; n < buffer.getNumSamples(); ++n){
+        midiMessages.addEvent (juce::MidiMessage::controllerEvent (midiChannel, 14, midiParams.bypass), n);
+    }
 }
 
 //==============================================================================

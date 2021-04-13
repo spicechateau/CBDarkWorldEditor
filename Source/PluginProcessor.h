@@ -69,9 +69,13 @@ public:
     juce::AudioParameterInt * effectOrder;
     juce::AudioParameterInt * worldType;
     
+    double startTime;
+    
 private:
     MIDIChange midiChange;
     MIDIParameters midiParams;
+    
+    int midiChannel = 1;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CBDarkWorldEditorAudioProcessor)
 };

@@ -14,10 +14,10 @@
  #define JucePlugin_Build_VST              0
 #endif
 #ifndef  JucePlugin_Build_VST3
- #define JucePlugin_Build_VST3             0
+ #define JucePlugin_Build_VST3             1
 #endif
 #ifndef  JucePlugin_Build_AU
- #define JucePlugin_Build_AU               1
+ #define JucePlugin_Build_AU               0
 #endif
 #ifndef  JucePlugin_Build_AUv3
  #define JucePlugin_Build_AUv3             0
@@ -92,7 +92,7 @@
  #define JucePlugin_Vst3Category           "Fx|External"
 #endif
 #ifndef  JucePlugin_AUMainType
- #define JucePlugin_AUMainType             'aumf'
+ #define JucePlugin_AUMainType             'aufx'
 #endif
 #ifndef  JucePlugin_AUSubType
  #define JucePlugin_AUSubType              JucePlugin_PluginCode

@@ -28,7 +28,7 @@ public:
     void setEffectOrder (int effectOrder);
     void setWorldType (int worldType);
     
-    int bypass = 0;
+    int bypass;
     int decay;
     int mix;
     int dwell;
@@ -38,5 +38,6 @@ public:
     int darkType;
     int effectOrder;
     int worldType;
+    
 private:
 };
