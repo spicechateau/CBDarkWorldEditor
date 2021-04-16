@@ -14,7 +14,7 @@
 //==============================================================================
 /**
 */
-class CBDarkWorldEditorAudioProcessorEditor  : public juce::AudioProcessorEditor,
+class CBDarkWorldEditorAudioProcessorEditor  : public               juce::AudioProcessorEditor,
                                                 public juce::Slider::Listener,
                                                 public juce::ComboBox::Listener,
                                                 public juce::Button::Listener,

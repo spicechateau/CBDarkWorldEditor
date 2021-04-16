@@ -106,8 +106,6 @@ void CBDarkWorldEditorAudioProcessor::changeProgramName (int index, const juce::
 //==============================================================================
 void CBDarkWorldEditorAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
 }
 
 void CBDarkWorldEditorAudioProcessor::releaseResources()
@@ -144,29 +142,28 @@ bool CBDarkWorldEditorAudioProcessor::isBusesLayoutSupported (const BusesLayout&
 
 void CBDarkWorldEditorAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
-    
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
 
+    midiParams.setBypass (* darkOn, * worldOn);
+//    midiParams.setDecay (* decay);
+//    midiParams.setMix (* mix);
+//    midiParams.setDwell (* dwell);
+//    midiParams.setMod (* modify);
+//    midiParams.setTone (* tone);
+//    midiParams.setPreDelay (* preDelay);
+//    midiParams.setDarkType (* darkType);
+//    midiParams.setEffectOrder (* effectOrder);
+//    midiParams.setWorldType (* worldType);
+    
+    // Clear audio and midi buffers
+    buffer.clear();
     midiMessages.clear();
     
-    midiParams.setBypass (* darkOn, * worldOn);
-    midiParams.setDecay (* decay);
-    midiParams.setMix (* mix);
-    midiParams.setDwell (* dwell);
-    midiParams.setMod (* modify);
-    midiParams.setTone (* tone);
-    midiParams.setPreDelay (* preDelay);
-    midiParams.setDarkType (* darkType);
-    midiParams.setEffectOrder (* effectOrder);
-    midiParams.setWorldType (* worldType);
+    // Create CC message for bypass parameter and add message to midiChanges buffer
+    m103 = juce::MidiMessage::controllerEvent (2, 103, midiParams.bypass);
+    midiChanges.addEvent (m103, midiMessages.getLastEventTime());
     
-    for (int n = 0; n < buffer.getNumSamples(); ++n){
-        midiMessages.addEvent (juce::MidiMessage::controllerEvent (midiChannel, 14, midiParams.bypass), n);
-    }
+    // Fill midiMessages with CC parameter change messages from midiChanges buffer
+    midiMessages.swapWith (midiChanges);
 }
 
 //==============================================================================

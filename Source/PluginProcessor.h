@@ -9,7 +9,6 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "MIDIChange.h"
 #include "MIDIParameters.h"
 
 //==============================================================================
@@ -71,11 +70,13 @@ public:
     
     double startTime;
     
+    int previousSampleNumber = 0;
+    
 private:
-    MIDIChange midiChange;
     MIDIParameters midiParams;
     
-    int midiChannel = 1;
+    juce::MidiBuffer midiChanges;
+    juce::MidiMessage m103;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CBDarkWorldEditorAudioProcessor)
 };

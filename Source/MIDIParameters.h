@@ -16,7 +16,6 @@ class MIDIParameters
     
 public:
     void setBypass (bool darkOn, bool worldOn);
-    
     void setDecay (int decay);
     void setMix (int mix);
     void setDwell (int dwell);
@@ -38,6 +37,6 @@ public:
     int darkType;
     int effectOrder;
     int worldType;
-    
 private:
+
 };
